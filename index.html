@@ -57,6 +57,8 @@ nav.systems button:focus-visible,.node:focus-visible,.seg button:focus-visible{o
 .badge{display:inline-block;font:600 10.5px var(--mono);padding:1px 6px;border-radius:2px;margin-left:6px;vertical-align:1px;white-space:nowrap}
 .b-red{background:var(--ok-soft);color:var(--ok)}
 .b-chk{background:var(--warn-soft);color:var(--warn)}
+.b-wd{background:var(--accent-soft);color:var(--accent);text-decoration:none}
+.b-ver{background:var(--bg);color:var(--fg);border:1px solid var(--line)}
 
 .tree{background:var(--panel);border:1px solid var(--line);padding:12px 14px}
 .tree ul{list-style:none;margin:0;padding-left:18px;position:relative}
@@ -132,15 +134,14 @@ footer a{color:var(--accent)}
       <div class="general" id="general"></div>
       <div class="tree" id="tree"></div>
       <div class="legend">
-        <span><span class="badge b-red">2014 + A1:2018</span> editions commonly cited in test reports</span>
-        <span><span class="badge b-chk">confirm edition</span> check the current edition with the standards body</span>
+        <span><span class="badge b-red">2014 + A1:2018</span> current edition (earlier editions listed where still cited)</span><span><span class="badge b-wd">withdrawn</span> no longer current</span>
       </div>
     </section>
     <aside class="detail" id="detail" aria-live="polite"></aside>
   </div>
 
   <footer>
-    <p><strong>Guidance only.</strong> This chart helps identify which test standards normally apply to a specimen. The applicable standard, edition and classification for a project must be confirmed against the project specification and with the approving authority (e.g. Buildings Department, Fire Services Department). Editions shown are those commonly cited; always check the current edition before specifying a test.</p>
+    <p><strong>Guidance only.</strong> This chart helps identify which test standards normally apply to a specimen. The applicable standard, edition and classification for a project must be confirmed against the project specification and with the approving authority (e.g. Buildings Department, Fire Services Department). Editions were checked against the BSI, CEN, ISO, ASTM and SAMR catalogues in October 2026; always check the current edition before specifying a test.</p>
     <p>Prepared by Hong Kong Curtain Wall Testing Centre Ltd. For testing enquiries, visit <a href="https://www.curtainwalltest.com" target="_blank" rel="noopener">www.curtainwalltest.com</a>.</p>
   </footer>
 </div>
@@ -149,67 +150,67 @@ footer a{color:var(--accent)}
 const R=(ed)=>({red:ed});           // editions commonly cited
 const C={chk:true};                 // part/title only
 const clean=(ed)=>(ed||"").replace(/,\s*(excl\.|Cl\.).*$/,"").trim();
-const S=(code,title,flag,ed)=>({code,title,...(flag==='r'&&clean(ed)?{red:clean(ed)}:{chk:true})});
+const S=(code,title,flag,ed)=>({code,title,...(flag==='w'?{wd:ed}:(flag==='r'||flag==='v')&&clean(ed)?{red:clean(ed)}:{chk:true})});
 
 const DATA={
  bsen:{name:"BS EN",
   general:[S("BS EN 1363-1","General requirements","r","1999 · 2012 · 2020"),
            S("BS EN 1363-2","Alternative and additional procedures","r","1999, excl. Cl. 4 & 7"),
-           S("BS EN 1363-3","Verification of furnace performance (lab only)","c")],
+           S("ENV 1363-3","Verification of furnace performance (lab only)","w","1998, withdrawn by CEN, no replacement")],
   gen:"BS EN 1363-1",
   tree:[
-   {g:"Loadbearing",zh:"荷載",cls:"BS EN 13501-2 · R / RE / REI",kids:[
+   {g:"Loadbearing",zh:"荷載",cls:"BS EN 13501-2:2023 · R / RE / REI",kids:[
      {sub:"Vertical"},
      {n:"Wall",zh:"牆",s:[S("BS EN 1365-1","Walls","r","1999 · 2012")],o:"vertical",lb:"loadbearing",noun:"wall"},
      {n:"Column",zh:"柱",s:[S("BS EN 1365-4","Columns","r","1999")],o:"vertical",lb:"loadbearing",noun:"column"},
      {sub:"Horizontal"},
      {n:"Floor and roof",zh:"樓板",s:[S("BS EN 1365-2","Floors and roofs","r","2000 · 2014")],o:"horizontal",lb:"loadbearing",noun:"floor"},
      {n:"Beam",zh:"樑",s:[S("BS EN 1365-3","Beams","r","2000")],o:"horizontal",lb:"loadbearing",noun:"beam"},
-     {n:"Balcony and walkway",s:[S("BS EN 1365-5","Balconies and walkways","c")],o:"horizontal",lb:"loadbearing",noun:"balcony"},
-     {n:"Stair",zh:"樓梯",s:[S("BS EN 1365-6","Stairs","c")],o:"horizontal",lb:"loadbearing",noun:"stair"}]},
-   {g:"Non-loadbearing",zh:"非荷載",cls:"BS EN 13501-2 · E / EW / EI",kids:[
+     {n:"Balcony and walkway",s:[S("BS EN 1365-5","Balconies and walkways","v","2004")],o:"horizontal",lb:"loadbearing",noun:"balcony"},
+     {n:"Stair",zh:"樓梯",s:[S("BS EN 1365-6","Stairs","v","2004")],o:"horizontal",lb:"loadbearing",noun:"stair"}]},
+   {g:"Non-loadbearing",zh:"非荷載",cls:"BS EN 13501-2:2023 · E / EW / EI",kids:[
      {sub:"Vertical"},
      {n:"Partition wall",zh:"間隔牆",s:[S("BS EN 1364-1","Walls","r","1999 · 2015, excl. Cl. 9.5")],o:"vertical",lb:"non-loadbearing",noun:"partition wall"},
      {n:"Glazed wall / glazed screen",zh:"玻璃牆",s:[S("BS EN 1364-1","Walls, Annex A (glazed elements)","r","1999 · 2015, excl. Cl. 9.5")],o:"vertical",lb:"non-loadbearing",noun:"glazed wall",note:"Glass on its own falls under BS EN 1364-1. Annex A covers fully and partly glazed walls."},
      {n:"Curtain wall, full configuration",zh:"幕牆",s:[S("BS EN 1364-3","Curtain walling, full configuration","r","2006 · 2014")],o:"vertical",lb:"non-loadbearing",noun:"curtain wall"},
      {n:"Curtain wall, part configuration (spandrel)",s:[S("BS EN 1364-4","Curtain walling, part configuration","r","2007 · 2014")],o:"vertical",lb:"non-loadbearing",noun:"curtain wall spandrel"},
-     {n:"Air transfer grille",s:[S("BS EN 1364-5","Air transfer grilles","c")],o:"vertical",lb:"non-loadbearing",noun:"air transfer grille"},
-     {n:"Cavity barrier",s:[S("BS EN 1364-6","Cavity barriers","c")],o:"vertical",lb:"non-loadbearing",noun:"cavity barrier"},
+     {n:"Air transfer grille",s:[S("BS EN 1364-5","Air transfer grilles","v","2026")],o:"vertical",lb:"non-loadbearing",noun:"air transfer grille"},
+     {n:"Cavity barrier (open-state)",s:[S("BS EN 1364-6","Open-state cavity barriers","v","2025")],o:"vertical",lb:"non-loadbearing",noun:"cavity barrier"},
      {sub:"Horizontal"},
      {n:"Ceiling",zh:"吊頂",s:[S("BS EN 1364-2","Ceilings","r","1999 · 2018")],o:"horizontal",lb:"non-loadbearing",noun:"ceiling"}]},
-   {g:"Doors, shutters and openable windows",zh:"門 / 捲閘 / 窗",cls:"BS EN 13501-2 · E / EW / EI1 / EI2, S, C",kids:[
+   {g:"Doors, shutters and openable windows",zh:"門 / 捲閘 / 窗",cls:"BS EN 13501-2:2023 · E / EW / EI1 / EI2, S, C",kids:[
      {n:"Doorset (metal, timber, glazed, composite; single/double leaf; single/double acting)",zh:"防火門",s:[S("BS EN 1634-1","Doors, shutters and openable windows","r","2014 + A1:2018")],o:"vertical",lb:"non-loadbearing",noun:"door",door:true},
      {n:"Rolling shutter",zh:"捲閘",s:[S("BS EN 1634-1","Doors, shutters and openable windows","r","2014 + A1:2018")],o:"vertical",lb:"non-loadbearing",noun:"rolling shutter"},
      {n:"Openable window",zh:"可開啟窗",s:[S("BS EN 1634-1","Doors, shutters and openable windows","r","2014 + A1:2018")],o:"vertical",lb:"non-loadbearing",noun:"openable window"},
      {n:"Building hardware",s:[S("BS EN 1634-2","Building hardware","r","2008")],o:"vertical",lb:"non-loadbearing",noun:"door hardware"},
-     {n:"Smoke control door",zh:"防煙門",s:[S("BS EN 1634-3","Smoke control doors (leakage)","r","2004")],o:"vertical",lb:"non-loadbearing",noun:"smoke control door",nofire:true,cls:"BS EN 13501-2 · Sa / S200"},
+     {n:"Smoke control door",zh:"防煙門",s:[S("BS EN 1634-3","Smoke control doors (leakage)","r","2004")],o:"vertical",lb:"non-loadbearing",noun:"smoke control door",nofire:true,cls:"BS EN 13501-2:2023 · Sa / S200"},
      {n:"Lift landing door",zh:"升降機層門",s:[S("BS EN 81-58","Landing doors fire resistance test","r","2003 · 2018 · 2022")],o:"vertical",lb:"non-loadbearing",noun:"lift landing door"}]},
-   {g:"Smoke control",zh:"排煙 / 擋煙",cls:"BS EN 13501-4 · D600 / DH",kids:[
+   {g:"Smoke control",zh:"排煙 / 擋煙",cls:"BS EN 13501-4:2016 · D600 / DH",kids:[
      {n:"Smoke barrier / smoke curtain (static or active, incl. glass)",zh:"擋煙垂壁",s:[S("BS EN 12101-1","Smoke barriers, Annex D temperature/time test","r","2005 + A1:2006")],o:"vertical",lb:"non-loadbearing",noun:"static smoke barrier",current:true,
-      note:"Glass smoke barriers are static smoke barriers (BS EN 12101-1, 0.4). BS EN 13501-4 7.4.2 says they are tested to BS EN 12101-1, not BS EN 1364-1. DH: standard curve, tolerances to BS EN 1363-2. D600: standard curve up to 620 °C, then held."},
+      note:"Glass smoke barriers are static smoke barriers (BS EN 12101-1, 0.4). BS EN 13501-4:2007, 7.4.2 says they are tested to BS EN 12101-1, not BS EN 1364-1. DH: standard curve, tolerances to BS EN 1363-2. D600: standard curve up to 620 °C, then held."},
      {n:"Smoke barrier, permeability",s:[S("BS EN 12101-1","Annex C, permeability to smoke","r","2005 + A1:2006")],o:"vertical",lb:"non-loadbearing",noun:"smoke barrier material",nofire:true,note:"Not needed for impermeable materials such as glass or sheet metal: Annex C.1 accepts written confirmation."},
      {n:"Natural smoke and heat exhaust ventilator",s:[S("BS EN 12101-2","Natural SHEV, Annexes C, D, G","r","2003 · 2017")],o:"horizontal",lb:"non-loadbearing",noun:"natural smoke and heat exhaust ventilator"},
-     {n:"Powered smoke and heat exhaust ventilator",s:[S("BS EN 12101-3","Powered ventilators","c")],o:"horizontal",lb:"non-loadbearing",noun:"powered ventilator"}]},
-   {g:"Service installations",zh:"屋宇裝備",cls:"BS EN 13501-2 / 13501-3 / 13501-4",kids:[
-     {n:"Ventilation duct",s:[S("BS EN 1366-1","Ventilation ducts","c")],noun:"ventilation duct"},
-     {n:"Fire damper",s:[S("BS EN 1366-2","Fire dampers","c")],noun:"fire damper"},
-     {n:"Penetration seal",s:[S("BS EN 1366-3","Penetration seals","c")],noun:"penetration seal"},
-     {n:"Linear joint seal (incl. curtain wall perimeter)",s:[S("BS EN 1366-4","Linear joint and gap seals","c")],noun:"linear joint seal"},
+     {n:"Powered smoke and heat exhaust ventilator",s:[S("BS EN 12101-3","Powered smoke and heat control ventilators (fans)","v","2015")],o:"horizontal",lb:"non-loadbearing",noun:"powered ventilator"}]},
+   {g:"Service installations",zh:"屋宇裝備",cls:"BS EN 13501-2:2023 / 13501-3:2025 / 13501-4:2016",kids:[
+     {n:"Ventilation duct",s:[S("BS EN 1366-1","Ventilation ducts","v","2014 + A1:2020")],noun:"ventilation duct"},
+     {n:"Fire damper",s:[S("BS EN 1366-2","Fire dampers","v","2015")],noun:"fire damper"},
+     {n:"Penetration seal",s:[S("BS EN 1366-3","Penetration seals","v","2021 + A1:2024")],noun:"penetration seal"},
+     {n:"Linear joint seal (incl. curtain wall perimeter)",s:[S("BS EN 1366-4","Linear joint seals","v","2021")],noun:"linear joint seal"},
      {n:"Service duct and shaft",s:[S("BS EN 1366-5","Service ducts and shafts","r","2010 · 2021")],noun:"service duct"},
      {n:"Raised access / hollow core floor",s:[S("BS EN 1366-6","Raised access and hollow core floors","r","2004")],noun:"raised access floor"},
-     {n:"Conveyor system closure",s:[S("BS EN 1366-7","Conveyor systems and their closures","c")],noun:"conveyor closure"},
-     {n:"Smoke extraction duct, multi-compartment",s:[S("BS EN 1366-8","Smoke extraction ducts","c")],noun:"smoke extraction duct"},
-     {n:"Smoke extraction duct, single compartment",s:[S("BS EN 1366-9","Single compartment smoke extraction ducts","c")],noun:"smoke extraction duct"},
-     {n:"Smoke control damper",s:[S("BS EN 1366-10","Smoke control dampers","c")],noun:"smoke control damper"},
-     {n:"Cable system protection",s:[S("BS EN 1366-11","Fire protective systems for cable systems","c")],noun:"cable protection system"},
-     {n:"Non-mechanical fire barrier for ductwork",s:[S("BS EN 1366-12","Non-mechanical fire barrier for ventilation ductwork","c")],noun:"fire barrier"},
-     {n:"Chimney",s:[S("BS EN 1366-13","Chimneys","c")],noun:"chimney"}]},
-   {g:"Fire protection to structural members",zh:"結構防火保護",cls:"BS EN 13501-2 · R",kids:[
-     {n:"Horizontal / vertical protective membrane",s:[S("BS EN 13381-1","Horizontal protective membranes","c"),S("BS EN 13381-2","Vertical protective membranes","c")],noun:"protective membrane"},
-     {n:"Concrete members",s:[S("BS EN 13381-3","Concrete members","c")],noun:"concrete member"},
+     {n:"Conveyor system closure",s:[S("BS EN 1366-7","Conveyor systems and their closures","v","2004")],noun:"conveyor closure"},
+     {n:"Smoke extraction duct, multi-compartment",s:[S("BS EN 1366-8","Smoke extraction ducts","v","2024")],noun:"smoke extraction duct"},
+     {n:"Smoke extraction duct, single compartment",s:[S("BS EN 1366-9","Single compartment smoke extraction ducts","v","2024")],noun:"smoke extraction duct"},
+     {n:"Smoke control damper",s:[S("BS EN 1366-10","Smoke control dampers","v","2022")],noun:"smoke control damper"},
+     {n:"Cable system protection",s:[S("BS EN 1366-11","Fire protective systems for cable systems","v","2018 + A1:2021")],noun:"cable protection system"},
+     {n:"Non-mechanical fire barrier for ductwork",s:[S("BS EN 1366-12","Non-mechanical fire barrier for ventilation ductwork","v","2014 + A1:2019")],noun:"fire barrier"},
+     {n:"Chimney",s:[S("BS EN 1366-13","Chimneys","v","2019")],noun:"chimney"}]},
+   {g:"Fire protection to structural members",zh:"結構防火保護",cls:"BS EN 13501-2:2023 · R",kids:[
+     {n:"Horizontal / vertical protective membrane",s:[S("BS EN 13381-1","Horizontal protective membranes","v","2020"),S("BS EN 13381-2","Vertical protective membranes","v","2014")],noun:"protective membrane"},
+     {n:"Concrete members",s:[S("BS EN 13381-3","Applied protection to concrete members","v","2015")],noun:"concrete member"},
      {n:"Steel, passive protection (boards, sprays)",s:[S("BS EN 13381-4","Passive protection to steel","r","2013, Cl. 10–12, with BS EN 1365-3 / 1365-4")],noun:"steel member"},
      {n:"Steel, reactive protection (intumescent)",s:[S("BS EN 13381-8","Reactive protection to steel","r","2013, Cl. 10–12, with BS EN 1365-3 / 1365-4")],noun:"steel member"},
-     {n:"Other (composite, filled columns, timber, web openings, bars)",s:[S("BS EN 13381-5 to -10","Parts 5–10","c")],noun:"structural member"}]}
+     {n:"Other (composite, filled columns, timber, web openings, bars)",s:[S("BS EN 13381-5","Concrete/profiled steel composite members","v","2014"),S("BS EN 13381-6","Concrete filled hollow steel columns","v","2012"),S("BS EN 13381-7","Timber members","v","2019"),S("BS EN 13381-9","Steel beams with web openings","v","2015"),S("BS EN 13381-10","Solid steel bars in tension","v","2020")],noun:"structural member"}]}
   ]},
 
  bs:{name:"BS 476",
@@ -222,9 +223,9 @@ const DATA={
      {n:"Partition, glazed element, ceiling membrane",zh:"間隔牆 / 玻璃 / 吊頂",s:[S("BS 476-22","Non-loadbearing elements","r","1987")],o:"vertical",lb:"non-loadbearing",noun:"partition"},
      {n:"Doorset and shutter",zh:"門 / 捲閘",s:[S("BS 476-22","Non-loadbearing elements (doorsets and shutters)","r","1987")],o:"vertical",lb:"non-loadbearing",noun:"door",door:true}]},
    {g:"Other",kids:[
-     {n:"Component contributing to structural fire resistance",s:[S("BS 476-23","Contribution of components to fire resistance of a structure","c")],noun:"component"},
-     {n:"Ventilation duct",s:[S("BS 476-24","Ventilation ducts","c")],noun:"ventilation duct"},
-     {n:"Smoke curtain",zh:"擋煙垂壁",s:[S("BS 7346-3","Smoke curtains, Cl. 4.1 (with BS 476-20)","r","1990")],o:"vertical",lb:"non-loadbearing",noun:"smoke curtain",note:"Older BS route for smoke curtains. Check whether BS 7346-3 is still current before specifying it."}]}
+     {n:"Component contributing to structural fire resistance",s:[S("BS 476-23","Contribution of components to fire resistance of a structure","v","1987")],noun:"component"},
+     {n:"Ventilation duct",s:[S("BS 476-24","Ventilation ducts","v","1987")],noun:"ventilation duct"},
+     {n:"Smoke curtain",zh:"擋煙垂壁",s:[S("BS 7346-3","Smoke curtains, Cl. 4.1 (with BS 476-20)","w","1990, withdrawn 2009")],o:"vertical",lb:"non-loadbearing",noun:"smoke curtain",note:"BSI withdrew BS 7346-3 in 2009 and names no replacement. For new smoke barrier tests, use BS EN 12101-1 (see the BS EN tab)."}]}
   ]},
 
  gb:{name:"GB",
@@ -233,9 +234,9 @@ const DATA={
   tree:[
    {g:"Loadbearing",zh:"承重",kids:[
      {sub:"Vertical"},{n:"Wall",zh:"牆",s:[S("GB/T 9978.4","Loadbearing vertical elements","r","2008")],o:"vertical",lb:"loadbearing",noun:"wall"},
-     {n:"Column",zh:"柱",s:[S("GB/T 9978.7","Columns","c")],o:"vertical",lb:"loadbearing",noun:"column"},
+     {n:"Column",zh:"柱",s:[S("GB/T 9978.7","Columns","v","2008")],o:"vertical",lb:"loadbearing",noun:"column"},
      {sub:"Horizontal"},{n:"Floor and roof",zh:"樓板",s:[S("GB/T 9978.5","Loadbearing horizontal elements","r","2008")],o:"horizontal",lb:"loadbearing",noun:"floor"},
-     {n:"Beam",zh:"樑",s:[S("GB/T 9978.6","Beams","c")],o:"horizontal",lb:"loadbearing",noun:"beam"}]},
+     {n:"Beam",zh:"樑",s:[S("GB/T 9978.6","Beams","v","2008")],o:"horizontal",lb:"loadbearing",noun:"beam"}]},
    {g:"Non-loadbearing",zh:"非承重",kids:[
      {sub:"Vertical"},{n:"Partition wall",zh:"隔牆",s:[S("GB/T 9978.8","Non-loadbearing vertical elements","r","2008")],o:"vertical",lb:"non-loadbearing",noun:"partition wall"},
      {n:"Glazed element",zh:"防火玻璃構件",s:[S("GB/T 12513","Glazed elements","r","2006")],o:"vertical",lb:"non-loadbearing",noun:"glazed element"},
@@ -245,23 +246,23 @@ const DATA={
   ]},
 
  iso:{name:"ISO 834",
-  general:[S("ISO 834-1","General requirements","r","1999 + Amd. 1:2012 · 2025"),S("ISO 834-2","Furnace calibration (lab only)","c")],
+  general:[S("ISO 834-1","General requirements","r","1999 + Amd. 1:2012 · 2025"),S("ISO 834-2","Measuring furnace exposure (lab only)","v","2019")],
   gen:"ISO 834-1",
   tree:[
    {g:"Loadbearing",zh:"荷載",kids:[
-     {sub:"Vertical"},{n:"Wall",s:[S("ISO 834-4","Loadbearing vertical elements","r","")],o:"vertical",lb:"loadbearing",noun:"wall"},
-     {n:"Column",s:[S("ISO 834-7","Columns","r","")],o:"vertical",lb:"loadbearing",noun:"column"},
-     {sub:"Horizontal"},{n:"Floor and roof",s:[S("ISO 834-5","Loadbearing horizontal elements","r","")],o:"horizontal",lb:"loadbearing",noun:"floor"},
-     {n:"Beam",s:[S("ISO 834-6","Beams","r","")],o:"horizontal",lb:"loadbearing",noun:"beam"}]},
+     {sub:"Vertical"},{n:"Wall",s:[S("ISO 834-4","Loadbearing vertical elements","v","2000")],o:"vertical",lb:"loadbearing",noun:"wall"},
+     {n:"Column",s:[S("ISO 834-7","Columns","v","2025")],o:"vertical",lb:"loadbearing",noun:"column"},
+     {sub:"Horizontal"},{n:"Floor and roof",s:[S("ISO 834-5","Loadbearing horizontal elements","v","2000")],o:"horizontal",lb:"loadbearing",noun:"floor"},
+     {n:"Beam",s:[S("ISO 834-6","Beams","v","2000")],o:"horizontal",lb:"loadbearing",noun:"beam"}]},
    {g:"Non-loadbearing",zh:"非荷載",kids:[
-     {sub:"Vertical"},{n:"Partition wall",s:[S("ISO 834-8","Non-loadbearing vertical elements","r","")],o:"vertical",lb:"non-loadbearing",noun:"partition wall"},
+     {sub:"Vertical"},{n:"Partition wall",s:[S("ISO 834-8","Non-loadbearing vertical elements","v","2002 + Cor 1:2009")],o:"vertical",lb:"non-loadbearing",noun:"partition wall"},
      {n:"Glazed element",s:[S("ISO 3009","Glazed elements","r","2003")],o:"vertical",lb:"non-loadbearing",noun:"glazed element"},
-     {sub:"Horizontal"},{n:"Ceiling",s:[S("ISO 834-9","Non-loadbearing ceilings","r","")],o:"horizontal",lb:"non-loadbearing",noun:"ceiling"}]},
+     {sub:"Horizontal"},{n:"Ceiling",s:[S("ISO 834-9","Non-loadbearing ceilings","v","2003 + Cor 1:2009")],o:"horizontal",lb:"non-loadbearing",noun:"ceiling"}]},
    {g:"Doors and shutters",kids:[
      {n:"Door and shutter assembly",s:[S("ISO 3008-1","Door and shutter assemblies","r","2007")],o:"vertical",lb:"non-loadbearing",noun:"door",door:true}]},
    {g:"Service installations",kids:[
-     {n:"Ventilation duct",s:[S("ISO 6944","Ventilation ducts","c")],noun:"ventilation duct"},
-     {n:"Penetration and joint seals",s:[S("ISO 10295","Penetration seals and linear joint seals","c")],noun:"seal"}]}
+     {n:"Ventilation and kitchen extract duct",s:[S("ISO 6944-1","Ventilation ducts","v","2024"),S("ISO 6944-2","Kitchen extract ducts","v","2009")],noun:"ventilation duct"},
+     {n:"Penetration and joint seals",s:[S("ISO 10295-1","Penetration seals","v","2026"),S("ISO 10295-2","Linear joint (gap) seals","v","2009 + Cor 1:2009")],noun:"seal"}]}
   ]},
 
  us:{name:"ASTM / UL / NFPA",
@@ -274,16 +275,16 @@ const DATA={
      {n:"Swinging door",s:[S("UL 10C","Positive pressure","r","2016 · 2021"),S("NFPA 252","Doors","r","2012 · 2017")],o:"vertical",lb:"non-loadbearing",noun:"door",door:true},
      {n:"Glazing and window",s:[S("NFPA 257","Window and glass block assemblies","r","2012")],o:"vertical",lb:"non-loadbearing",noun:"window assembly"}]},
    {g:"Joints and penetrations",kids:[
-     {n:"Curtain wall perimeter joint",s:[S("ASTM E2307","Perimeter fire barriers","c")],noun:"perimeter fire barrier"},
-     {n:"Building joint",s:[S("ASTM E1966","Joint systems","c")],noun:"joint system"},
-     {n:"Penetration firestop",s:[S("ASTM E814","Through-penetration firestops","c")],noun:"penetration firestop"}]}
+     {n:"Curtain wall perimeter joint",s:[S("ASTM E2307","Perimeter fire barriers","v","E2307-25b")],noun:"perimeter fire barrier"},
+     {n:"Building joint",s:[S("ASTM E1966","Joint systems","v","E1966-24")],noun:"joint system"},
+     {n:"Penetration firestop",s:[S("ASTM E814","Penetration firestop systems","v","E814-26")],noun:"penetration firestop"}]}
   ]}
 };
 
 const art=(w)=>/^[aeiou]/i.test(w)?"an":"a";
 let sys="bsen", selId=null, sym="asymmetric";
 const $=(id)=>document.getElementById(id);
-const badge=(s)=>s.red?`<span class="badge b-red" title="Editions commonly cited">${s.red}</span>`:`<span class="badge b-chk">confirm edition</span>`;
+const badge=(s)=>s.wd?`<span class="badge b-wd">withdrawn: ${s.wd}</span>`:s.red?`<span class="badge b-red" title="Editions commonly cited">${s.red}</span>`:`<span class="badge b-chk">confirm edition</span>`;
 const stdRow=(s)=>`<div class="std"><span class="code">${s.code}</span><span class="t">${s.title} ${badge(s)}</span></div>`;
 
 function renderTabs(){
