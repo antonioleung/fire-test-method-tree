@@ -35,6 +35,7 @@ header p{margin:4px 0 0;color:var(--muted);max-width:68ch}
 .titleblock span:nth-child(odd){color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 @media (max-width:640px){header.sheet{grid-template-columns:1fr}.titleblock{border-left:0;border-top:1.5px solid var(--fg);padding:10px 0 0}}
 
+.disclaim{margin:14px 0 0;font-size:13px;line-height:1.5;background:var(--warn-soft);color:var(--fg);border-left:3px solid var(--warn);padding:8px 12px}
 .chain{margin:18px 0 0;display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;font-size:12.5px}
 .chain .step{border:1px solid var(--line);background:var(--panel);padding:6px 10px;display:flex;flex-direction:column;min-width:0}
 .chain .step b{font-family:var(--display);font-size:14px}
@@ -120,6 +121,7 @@ footer a{color:var(--accent)}
     </div>
   </header>
 
+  <p class="disclaim" role="note"><strong>For reference only.</strong> This tool is provided for general guidance and testing purposes. Its content may be incomplete, out of date or inaccurate, and it is not a substitute for the standards themselves or for professional advice. 本工具僅供參考，內容未必完整或準確。</p>
   <div class="chain" aria-label="How a fire test standard is built">
     <div class="step"><b>① General requirements</b><small>furnace, curve, pressure, criteria</small></div><span class="arrow">+</span>
     <div class="step"><b>② Alternative / additional</b><small>other curves, extra measurements (if needed)</small></div><span class="arrow">+</span>
@@ -141,7 +143,8 @@ footer a{color:var(--accent)}
   </div>
 
   <footer>
-    <p><strong>Guidance only.</strong> This chart helps identify which test standards normally apply to a specimen. The applicable standard, edition and classification for a project must be confirmed against the project specification and with the approving authority (e.g. Buildings Department, Fire Services Department). Editions were checked against the BSI, CEN, ISO, ASTM and SAMR catalogues in October 2026; always check the current edition before specifying a test.</p>
+    <p><strong>Disclaimer.</strong> This chart is provided for general reference and guidance only. While care has been taken, Hong Kong Curtain Wall Testing Centre Ltd makes no representation or warranty as to its accuracy, completeness or currency, and accepts no liability for any loss or damage arising from its use. Standards are revised and withdrawn from time to time; always refer to the published standard and the project specification. The applicable test method, edition and classification for a project must be confirmed with the approving authority (e.g. Buildings Department, Fire Services Department). Editions were checked against the BSI, CEN, ISO, ASTM and SAMR catalogues in October 2026.</p>
+    <p>本圖表僅供一般參考。香港幕牆檢測中心有限公司不保證內容準確、完整或最新，亦不承擔因使用本圖表而引致的任何損失或責任。實際適用的測試標準、版本及分級，請以已出版標準、項目規範及審批當局的要求為準。</p>
     <p>Prepared by Hong Kong Curtain Wall Testing Centre Ltd. For testing enquiries, visit <a href="https://www.curtainwalltest.com" target="_blank" rel="noopener">www.curtainwalltest.com</a>.</p>
   </footer>
 </div>
